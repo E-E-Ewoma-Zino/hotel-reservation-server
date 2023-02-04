@@ -7,4 +7,8 @@ const router = express.Router();
 // @route	/tracking/mostbookedroombytype
 router.get("/mostBooked", (req, res) => tracking.bookingDetails(req, res));
 
+// @desc	GET the most booked room by type
+// @route	/tracking/upcomingReservations
+router.get("/upcomingReservations", (req, res) => tracking.upcomingReservations(req, res));
+
 module.exports = router;
