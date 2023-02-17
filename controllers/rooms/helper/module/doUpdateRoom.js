@@ -13,18 +13,41 @@ module.exports = async (roomData) => {
 		if (Object.hasOwnProperty.call(roomData, key)) {
 			const data = roomData[key];
 
-			if(data === undefined || data === null) continue;
+			if (data === undefined || data === null) continue;
 
 			const updateRoom = await rooms.update({
 				itemToupdateId: { _id: roomId },
-				optionsToUse: key === "images" || key === "videos"? "$push": "$set",
+				optionsToUse: key === "images" || key === "videos" ? "$push" : "$set",
 				propertyToUpdate: key,
 				updateValue: data
 			});
 
-			if(updateRoom.err) return updateRoom;
+			if (updateRoom.err) return updateRoom;
 		}
 	}
+
+	roomData.images && roomData.images.forEach(async ele => {
+		const updateRoom = await rooms.update({
+			itemToupdateId: { _id: roomId },
+			optionsToUse: "$push",
+			propertyToUpdate: "images",
+			updateValue: ele
+		});
+
+		if (updateRoom.err) return updateRoom;
+	});
+
+	roomData.videos && roomData.videos.forEach(async ele => {
+		const updateRoom = await rooms.update({
+			itemToupdateId: { _id: roomId },
+			optionsToUse: "$push",
+			propertyToUpdate: "videos",
+			updateValue: ele
+		});
+
+		if (updateRoom.err) return updateRoom;
+	});
+
 
 	return { status: 200, alert: alerts.SUCCESS, message: "Room Updated", err: null, data: true };
 }

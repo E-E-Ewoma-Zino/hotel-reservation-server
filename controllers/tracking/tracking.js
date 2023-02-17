@@ -25,7 +25,15 @@ class Tracking {
 		}
 	}
 
-	currentlyBookedRoom() { }
+	async allReservedRooms () { 
+		try {
+			const { status, ...body } = await filteredRoomsByType();
+			res.status(status).json({ status, ...body });
+		} catch (err) {
+			console.error("Error getting upcoming reservations Server:", err);
+			res.status(500).json({ err: err, message: "Error getting upcoming reservations Server", alert: alerts.DANGER });
+		}
+	}
 
 	totalRevenueGenerared() { }
 

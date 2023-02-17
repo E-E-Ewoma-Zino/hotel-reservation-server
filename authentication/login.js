@@ -27,7 +27,7 @@ module.exports = (req, res, next) => {
 				console.log("::reqLogIn_err:", reqLogIn_err);
 				return res.status(403).json({ err: "Failed to login", message: info.message, isLogedIn: false, alert: alert.DANGER, data: user });
 			}
-
+			
 			return res.status(200).json({ err: null, isLogedIn: true, alert: alert.SUCCESS, data: user });
 		});
 	})(req, res, next);

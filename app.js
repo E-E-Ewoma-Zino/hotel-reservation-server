@@ -22,7 +22,10 @@ app.use('/uploads', express.static(path.join(__dirname + '/uploads')));
 app.use(session({
 	secret: process.env.SECRET,
 	resave: false,
-	saveUninitialized: false
+	saveUninitialized: false,
+	cookie: {
+		secure: true
+	}
 }));
 
 // passport config
