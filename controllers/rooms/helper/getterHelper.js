@@ -4,8 +4,9 @@ const alerts = require("../../../constants/alerts");
 
 module.exports = {
 	async all(req, res) {
+		const query = req.query.type;
 		try {
-			const { status, err, message, data, alert } = await rooms.findAll();
+			const { status, err, message, data, alert } = await rooms.findAll(query === ''? {}: {type: req.query.type});
 			res.status(status).json({ alert, status, err, message, data });
 		} catch (err) {
 			console.error("Error in Server:", err);

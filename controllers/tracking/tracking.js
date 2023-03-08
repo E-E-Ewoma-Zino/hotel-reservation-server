@@ -1,6 +1,7 @@
 // controlls the tracking
 
 const alerts = require("../../constants/alerts");
+const getReservedDatesModule = require("./module/getReservedDates.module");
 const mostBookedRoomByType = require("./module/mostBookedRoom");
 const upcomingResercationsModule = require("./module/upcomingResercations.module");
 
@@ -25,13 +26,13 @@ class Tracking {
 		}
 	}
 
-	async allReservedRooms () { 
+	async reserved (req, res) {
 		try {
-			const { status, ...body } = await filteredRoomsByType();
+			const { status, ...body } = await getReservedDatesModule();
 			res.status(status).json({ status, ...body });
 		} catch (err) {
-			console.error("Error getting upcoming reservations Server:", err);
-			res.status(500).json({ err: err, message: "Error getting upcoming reservations Server", alert: alerts.DANGER });
+			console.error("Error getting reserved dates:", err);
+			res.status(500).json({ err: err.message, message: "Error getting reserved dates", alert: alerts.DANGER });
 		}
 	}
 
