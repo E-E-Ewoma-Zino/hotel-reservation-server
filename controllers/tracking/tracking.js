@@ -28,7 +28,8 @@ class Tracking {
 
 	async reserved (req, res) {
 		try {
-			const { status, ...body } = await getReservedDatesModule();
+			console.log("room id", req.query)
+			const { status, ...body } = await getReservedDatesModule(req.query.roomId);
 			res.status(status).json({ status, ...body });
 		} catch (err) {
 			console.error("Error getting reserved dates:", err);
