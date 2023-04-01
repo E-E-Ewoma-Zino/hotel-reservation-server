@@ -1,0 +1,39 @@
+{
+	"name": "hotel-reservation",
+	"version": "1.0.0",
+	"description": "A hotel reservation project",
+	"main": "app.js",
+	"scripts": {
+		"dev": "nodemon app.js",
+		"start": "node app.js"
+	},
+	"keywords": [
+		"Hotel",
+		"Reservation",
+		"Ewoma",
+		"Zino"
+	],
+	"author": "Ewoma Zino",
+	"license": "ISC",
+	"devDependencies": {
+		"nodemon": "^2.0.15",
+		"sass": "^1.50.1"
+	},
+	"dependencies": {
+		"cloudinary": "^1.35.0",
+		"cors": "^2.8.5",
+		"dotenv": "^10.0.0",
+		"express": "^4.17.1",
+		"express-session": "^1.17.2",
+		"lodash": "^4.17.21",
+		"method-override": "^3.0.0",
+		"moment": "^2.29.1",
+		"mongodb": "^4.2.1",
+		"mongoose": "^6.0.15",
+		"multer": "^1.4.3",
+		"nodemailer": "^6.7.2",
+		"passport": "^0.5.0",
+		"passport-local": "^1.0.0",
+		"passport-local-mongoose": "^6.1.0"
+	}
+}
