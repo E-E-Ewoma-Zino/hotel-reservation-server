@@ -1,6 +1,7 @@
 // update 
 const alerts = require("../../../../constants/alerts");
-const rooms = require("../../../../libs/rooms")
+const rooms = require("../../../../libs/rooms");
+const { uploadToCloudinary } = require("./uploadToCloudinary");
 
 module.exports = async (roomData) => {
 	// trun the features to an array
@@ -26,15 +27,19 @@ module.exports = async (roomData) => {
 		}
 	}
 
-	roomData.images && roomData.images.forEach(async ele => {
-		const updateRoom = await rooms.update({
-			itemToupdateId: { _id: roomId },
-			optionsToUse: "$push",
-			propertyToUpdate: "images",
-			updateValue: ele
-		});
+	roomData.images && uploadToCloudinary(roomData.images, (result)=> {
+		roomData.images.forEach(async (ele, index) => {
+			ele.cloud = result[index];
 
-		if (updateRoom.err) return updateRoom;
+			const updateRoom = await rooms.update({
+				itemToupdateId: { _id: roomId },
+				optionsToUse: "$push",
+				propertyToUpdate: "images",
+				updateValue: ele
+			});
+	
+			if (updateRoom.err) return updateRoom;
+		});
 	});
 
 	roomData.videos && roomData.videos.forEach(async ele => {
