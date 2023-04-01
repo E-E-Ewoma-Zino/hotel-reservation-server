@@ -4,7 +4,7 @@ exports.uploadToCloudinary = function (localMedia, callback) {
   const result = [];
 
   console.log("we here", localMedia);
-  localMedia.forEach(async (media, index, arr) => {
+  if(localMedia.length.le) localMedia.forEach(async (media, index, arr) => {
     try {
       console.log("file", media);
       const res = await cloudinary.uploader.upload(
@@ -30,4 +30,5 @@ exports.uploadToCloudinary = function (localMedia, callback) {
       }
     }
   });
+  else callback(result);
 };

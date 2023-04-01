@@ -4,11 +4,15 @@ const { uploadToCloudinary } = require("./module/uploadToCloudinary");
 
 module.exports = {
   async createRoom(req, res) {
+    const image = req.files?.images ? req.files.images : [];
+    const video = req.files?.videos ? req.files.videos : [];
+
     const bodyData = {
       ...req.body,
-      images: req.files.images,
-      videos: req.files.videos,
+      images: image,
+      videos: video,
     };
+
     // console.log(req.files);
     // console.log(bodyData);
     try {
@@ -22,17 +26,20 @@ module.exports = {
         async (result) => {
           console.log("our result", result);
           let count = 0;
-          while (count <= bodyData.images.length - 1) {
-            bodyData.images[count].cloud = result[count];
-            count++;
-          }
-          while (
-            count - (bodyData.images.length) <=
-            bodyData.videos.length - 1
-          ) {
-            bodyData.videos[count - (bodyData.images.length)].cloud = result[count];
-            count++;
-          }
+          if (bodyData.images.length)
+            while (count <= bodyData.images.length - 1) {
+              bodyData.images[count].cloud = result[count];
+              count++;
+            }
+          if (bodyData.videos.length)
+            while (
+              count - bodyData.images.length <=
+              bodyData.videos.length - 1
+            ) {
+              bodyData.videos[count - bodyData.images.length].cloud =
+                result[count];
+              count++;
+            }
 
           const { status, alert, err, message, data } = await rooms.create(
             bodyData
@@ -44,7 +51,11 @@ module.exports = {
       console.error("Error in Server:", err);
       res
         .status(500)
-        .json({ err: err.message, message: "Error in Server", alert: alerts.DANGER });
+        .json({
+          err: err.message,
+          message: "Error in Server",
+          alert: alerts.DANGER,
+        });
     }
   },
 };
