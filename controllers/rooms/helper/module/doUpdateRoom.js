@@ -1,12 +1,13 @@
-// update 
+// update
 const alerts = require("../../../../constants/alerts");
-const rooms = require("../../../../libs/rooms")
+const rooms = require("../../../../libs/rooms");
+const { uploadToCloudinary } = require("./uploadToCloudinary");
 
 module.exports = async (roomData) => {
 	// trun the features to an array
 	const { roomId } = roomData;
 
-	roomData.features = roomData.features.split(',');
+	roomData.features = roomData.features.split(",");
 
 	// update the room base on each data in the roomData obj
 	for (const key in roomData) {
@@ -15,39 +16,56 @@ module.exports = async (roomData) => {
 
 			if (data === undefined || data === null) continue;
 
+			if (key === "videos" || key === "images") continue;
+
 			const updateRoom = await rooms.update({
 				itemToupdateId: { _id: roomId },
-				optionsToUse: key === "images" || key === "videos" ? "$push" : "$set",
+				optionsToUse: "$set",
 				propertyToUpdate: key,
-				updateValue: data
+				updateValue: data,
 			});
 
 			if (updateRoom.err) return updateRoom;
 		}
 	}
 
-	roomData.images && roomData.images.forEach(async ele => {
-		const updateRoom = await rooms.update({
-			itemToupdateId: { _id: roomId },
-			optionsToUse: "$push",
-			propertyToUpdate: "images",
-			updateValue: ele
+	roomData.images &&
+		uploadToCloudinary(roomData.images, (result) => {
+			roomData.images.forEach(async (ele, index) => {
+				ele.cloud = result[index];
+
+				const updateRoom = await rooms.update({
+					itemToupdateId: { _id: roomId },
+					optionsToUse: "$push",
+					propertyToUpdate: "images",
+					updateValue: ele,
+				});
+
+				if (updateRoom.err) return updateRoom;
+			});
 		});
 
-		if (updateRoom.err) return updateRoom;
-	});
+	roomData.videos &&
+		uploadToCloudinary(roomData.videos, (result) => {
+			roomData.videos.forEach(async (ele, index) => {
+				ele.cloud = result[index];
 
-	roomData.videos && roomData.videos.forEach(async ele => {
-		const updateRoom = await rooms.update({
-			itemToupdateId: { _id: roomId },
-			optionsToUse: "$push",
-			propertyToUpdate: "videos",
-			updateValue: ele
+				const updateRoom = await rooms.update({
+					itemToupdateId: { _id: roomId },
+					optionsToUse: "$push",
+					propertyToUpdate: "videos",
+					updateValue: ele,
+				});
+
+				if (updateRoom.err) return updateRoom;
+			});
 		});
 
-		if (updateRoom.err) return updateRoom;
-	});
-
-
-	return { status: 200, alert: alerts.SUCCESS, message: "Room Updated", err: null, data: true };
+	return {
+		status: 200,
+		alert: alerts.SUCCESS,
+		message: "Room Updated",
+		err: null,
+		data: true,
+	};
 }

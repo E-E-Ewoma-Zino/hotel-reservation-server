@@ -14,8 +14,8 @@ module.exports = {
 			const theUser = await users.findById(bodyData.user);
 			
 			if (!theUser.err){
-				console.log("new bookings", bodyData);
 				const { status, alert, err, message, data } = await bookings.create(bodyData);
+				console.log("new bookings", data);
 				res.status(status).json({ alert, status, err, message, data });
 			}else {
 				res.status(400).json({ alert: alerts.DANGER, status: 400, err: "No User", message: "Failed to create because of no user", data: null });

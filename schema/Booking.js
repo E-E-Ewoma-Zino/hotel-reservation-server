@@ -15,6 +15,7 @@ const userSchema = mongoose.Schema({
 	start: mongoose.Schema.Types.Date,
 	end: mongoose.Schema.Types.Date,
 	payed: Number,
+	flutterWave: Object,
 	// incase the rooms price changes we would know how much it was at the time
 	roomPrice: Number
 }, { timestamps: true });

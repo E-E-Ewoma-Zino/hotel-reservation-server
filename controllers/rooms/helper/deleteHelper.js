@@ -23,7 +23,7 @@ module.exports = {
 			res.status(status).json({ alert, status, err, message, data });
 		} catch (err) {
 			console.error("Error in Server:", err);
-			res.status(500).json({ err: err, message: "Error in Server", alert: alerts.DANGER });
+			res.status(500).json({ err: err, message: err.message || "Error in Server", alert: err.alert || alerts.DANGER });
 		}
 	}
 }
