@@ -47,6 +47,10 @@ module.exports = async (property, customFreq) => {
 			// But as it gets to the ending if the loop sees that an item in the booking 
 			// arr is already in the mostBooked array the it will increament the inc
 			// and add the time it was booked and the paied value.
+
+			// Incase a room is deleted and we still need the booking to be in the db we do this to prevent null book.room
+			if(!book.room) continue;
+
 			if (val[property].toLowerCase() === book.room[property].toLowerCase()) {
 				val.inc = val.inc + 1;
 				val.room.push({ createdAt: book.createdAt, paied: book.payed });

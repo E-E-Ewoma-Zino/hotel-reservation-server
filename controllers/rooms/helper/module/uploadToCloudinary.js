@@ -3,12 +3,12 @@ const cloudinary = require("../../../../config/cloudinary");
 exports.uploadToCloudinary = function (localMedia, callback) {
   const result = [];
 
-  console.log("we here", localMedia);
-  if(localMedia.length.le) localMedia.forEach(async (media, index, arr) => {
+  console.log("we here");
+  if(localMedia.length) localMedia.forEach(async (media, index, arr) => {
     try {
       console.log("file", media);
       const res = await cloudinary.uploader.upload(
-        "https://n3glhg-5004.csb.app/" + media.path,
+        media.path,
         {
           use_filename: true,
           unique_filename: true,

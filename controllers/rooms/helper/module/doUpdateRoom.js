@@ -34,6 +34,7 @@ module.exports = async (roomData) => {
 			roomData.images.forEach(async (ele, index) => {
 				ele.cloud = result[index];
 
+				console.log("updated the room", ele.cloud)
 				const updateRoom = await rooms.update({
 					itemToupdateId: { _id: roomId },
 					optionsToUse: "$push",

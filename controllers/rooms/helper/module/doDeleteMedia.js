@@ -102,6 +102,3 @@ module.exports = async ({ roomId, cloud, mediaPath, mediaType }) => {
       data: null,
     };
 };
-
-	return { message: "Media deleted successfully", err: null, status: 200, alert: "success", data: true };
-}
